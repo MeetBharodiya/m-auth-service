@@ -7,13 +7,21 @@
     "dev": "node src/server.js",
     "format:fix": "prettier . --write",
     "format:check": "prettier . --check",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Meet Bharodiya",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.9.3",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^9.15.0",
     "prettier": "3.3.3",
-    "typescript": "^5.7.2"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0"
   }
 }
