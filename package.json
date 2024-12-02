@@ -59,6 +59,7 @@
     "cross-env": "package to handle environment variables same way across all types of shell",
     "eslint": "package to handle minor issues while developing an app like handling types and unnecessary used variable",
     "jest": "package automate the testing",
+    "supertest": "package to handle api calls while testing any test case",
     "husky": "package used for managing Git hooks, such as pre-commit or pre-push hooks",
     "lint-staged": "package which automatically runs linters on staged files as part of the pre-commit hook.",
     "http-errors": "package to add global error handler",
