@@ -106,6 +106,9 @@ describe('POST /auth/register', () => {
 
       //Assert
       expect(response.body).toHaveProperty('id')
+      const repository = connection.getRepository(User)
+      const users = await repository.find()
+      expect((response.body as Record<string, string>).id).toBe(users[0].id)
     })
   })
   describe('Fields are missing', () => {})
