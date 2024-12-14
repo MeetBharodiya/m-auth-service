@@ -2,9 +2,9 @@ import request from 'supertest'
 import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 import { User } from '../../src/entity/User'
-import { truncateTables } from '../utils'
 import app from '../../src/app'
 import { App } from 'supertest/types'
+import { Roles } from '../../src/constants'
 
 describe('POST /auth/register', () => {
   let connection: DataSource
@@ -16,9 +16,10 @@ describe('POST /auth/register', () => {
     connection = await AppDataSource.initialize()
   })
 
-  // will tun before each test case to clear the data from tables
+  // will tun before each test case to drop database and synchronize the database for any new added column or anything in schema
   beforeEach(async () => {
-    await truncateTables(connection)
+    await connection.dropDatabase()
+    await connection.synchronize()
   })
 
   // will run after all testcases run to close the connection with Database
@@ -109,6 +110,27 @@ describe('POST /auth/register', () => {
       const repository = connection.getRepository(User)
       const users = await repository.find()
       expect((response.body as Record<string, string>).id).toBe(users[0].id)
+    })
+
+    it('should assign customer role', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: '9B9yZ@example.com',
+        password: 'password123',
+      }
+
+      //Act
+      await request(app as unknown as App)
+        .post('/auth/register')
+        .send(userData)
+
+      //Assert
+      const repository = connection.getRepository(User)
+      const users = await repository.find()
+      expect(users[0]).toHaveProperty('role')
+      expect(users[0].role).toBe(Roles.CUSTOMER)
     })
   })
   describe('Fields are missing', () => {})

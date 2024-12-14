@@ -3,6 +3,7 @@ import { User } from '../entity/User'
 import { UserData } from '../types'
 import createHttpError from 'http-errors'
 import { Logger } from 'winston'
+import { Roles } from '../constants'
 
 export class UserService {
   constructor(
@@ -21,6 +22,7 @@ export class UserService {
         lastName,
         email,
         password,
+        role: Roles.CUSTOMER,
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
