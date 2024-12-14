@@ -9,7 +9,7 @@
     "format:check": "prettier . --check",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint .",
-    "test": "jest --watch --runInBand",
+    "test": "jest --watchAll --runInBand",
     "prepare": "husky",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs"
