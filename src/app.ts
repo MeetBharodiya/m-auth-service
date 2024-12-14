@@ -20,7 +20,7 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500
 
   res.status(statusCode).json({
-    errors: [
+    errors: [ //hello
       {
         type: err.name,
         msg: err.message,
