@@ -12,14 +12,20 @@ export class UserService {
     private logger: Logger,
   ) {}
   async create({ firstName, lastName, email, password }: UserData) {
+    this.logger.debug('Creating user in database', {
+      firstName,
+      lastName,
+      email,
+    })
+    // check if email already exists
+    const user = await this.userRepository.findOne({ where: { email: email } })
+    if (user) {
+      const err = createHttpError(400, 'Email already exists')
+      throw err
+    }
+    const saltRounds = 10
+    const hashedPassword = await bcrypt.hash(password, saltRounds)
     try {
-      this.logger.debug('Creating user in database', {
-        firstName,
-        lastName,
-        email,
-      })
-      const saltRounds = 10
-      const hashedPassword = await bcrypt.hash(password, saltRounds)
       return await this.userRepository.save({
         firstName,
         lastName,
