@@ -195,6 +195,71 @@ describe('POST /auth/register', () => {
 
       //Assert
       expect(response.statusCode).toBe(400)
+      expect(response.body).toHaveProperty('errors')
+      expect((response.body as { errors: [] }).errors).toBeInstanceOf(Array)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      expect(users).toHaveLength(0)
+    })
+
+    it('should return 400 status code if firstName field is missing', async () => {
+      //Arrange
+      const userData = {
+        firstName: '',
+        lastName: 'Doe',
+        email: '9B9yZ@example.com',
+        password: 'password123',
+      }
+
+      //Act
+      const response = await request(app as unknown as App)
+        .post('/auth/register')
+        .send(userData)
+
+      //Assert
+      expect(response.statusCode).toBe(400)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      expect(users).toHaveLength(0)
+    })
+
+    it('should return 400 status code if lastName field is missing', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'John',
+        lastName: '',
+        email: '9B9yZ@example.com',
+        password: 'password123',
+      }
+
+      //Act
+      const response = await request(app as unknown as App)
+        .post('/auth/register')
+        .send(userData)
+
+      //Assert
+      expect(response.statusCode).toBe(400)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      expect(users).toHaveLength(0)
+    })
+
+    it('should return 400 status code if password field is missing', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: '9B9yZ@example.com',
+        password: '',
+      }
+
+      //Act
+      const response = await request(app as unknown as App)
+        .post('/auth/register')
+        .send(userData)
+
+      //Assert
+      expect(response.statusCode).toBe(400)
       const userRepository = connection.getRepository(User)
       const users = await userRepository.find()
       expect(users).toHaveLength(0)
@@ -220,6 +285,48 @@ describe('POST /auth/register', () => {
       const userRepository = connection.getRepository(User)
       const users = await userRepository.find()
       expect(users[0].email).toBe('9B9yZ@example.com')
+    })
+
+    it('should rerun 400 status code if email field is not in proper format', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'user@..com',
+        password: 'password123',
+      }
+
+      //Act
+      const response = await request(app as unknown as App)
+        .post('/auth/register')
+        .send(userData)
+
+      //Assert
+      expect(response.statusCode).toBe(400)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      expect(users).toHaveLength(0)
+    })
+
+    it('should rerun 400 status code if password length is less than 8 characters', async () => {
+      //Arrange
+      const userData = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: '9B9yZ@example.com',
+        password: 'pass',
+      }
+
+      //Act
+      const response = await request(app as unknown as App)
+        .post('/auth/register')
+        .send(userData)
+
+      //Assert
+      expect(response.statusCode).toBe(400)
+      const userRepository = connection.getRepository(User)
+      const users = await userRepository.find()
+      expect(users).toHaveLength(0)
     })
   })
 })
