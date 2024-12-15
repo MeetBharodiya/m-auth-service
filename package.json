@@ -51,6 +51,7 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-validator": "^7.2.0",
     "http-errors": "^2.0.0",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
@@ -69,6 +70,7 @@
     "reflect-metadata": "package to handle destructors on postgres SQL db schema",
     "typeorm": "package to add layers between app and database to hadnle all types of queries like SQL and NOSQL",
     "winston": "package to add logger in app",
-    "bcrypt": "package to hash password"
+    "bcrypt": "package to hash password",
+    "express-validator": "package to add validation on request body"
   }
 }
