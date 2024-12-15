@@ -18,6 +18,7 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
     "@types/http-errors": "^2.0.4",
@@ -47,6 +48,7 @@
     ]
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "http-errors": "^2.0.0",
@@ -66,6 +68,7 @@
     "pg": "package to connect postgreSQL db with express app",
     "reflect-metadata": "package to handle destructors on postgres SQL db schema",
     "typeorm": "package to add layers between app and database to hadnle all types of queries like SQL and NOSQL",
-    "winston": "package to add logger in app"
+    "winston": "package to add logger in app",
+    "bcrypt": "package to hash password"
   }
 }

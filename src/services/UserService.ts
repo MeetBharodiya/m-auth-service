@@ -4,6 +4,7 @@ import { UserData } from '../types'
 import createHttpError from 'http-errors'
 import { Logger } from 'winston'
 import { Roles } from '../constants'
+import bcrypt from 'bcrypt'
 
 export class UserService {
   constructor(
@@ -17,11 +18,13 @@ export class UserService {
         lastName,
         email,
       })
+      const saltRounds = 10
+      const hashedPassword = await bcrypt.hash(password, saltRounds)
       return await this.userRepository.save({
         firstName,
         lastName,
         email,
-        password,
+        password: hashedPassword,
         role: Roles.CUSTOMER,
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
