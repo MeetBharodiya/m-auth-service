@@ -23,6 +23,7 @@
     "@types/express": "^5.0.0",
     "@types/http-errors": "^2.0.4",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^16.11.10",
     "@types/supertest": "^6.0.2",
     "@types/winston": "^2.4.4",
@@ -53,6 +54,7 @@
     "express": "^4.21.1",
     "express-validator": "^7.2.0",
     "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.4.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.20",
@@ -71,6 +73,8 @@
     "typeorm": "package to add layers between app and database to hadnle all types of queries like SQL and NOSQL",
     "winston": "package to add logger in app",
     "bcrypt": "package to hash password",
-    "express-validator": "package to add validation on request body"
+    "express-validator": "package to add validation on request body",
+    "jsonwebtoken": "package to add jwt token for authentication",
+    "dotenv": "package to handle environment variables"
   }
 }

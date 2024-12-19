@@ -9,3 +9,26 @@ export const truncateTables = async (connection: DataSource) => {
     await repository.clear()
   }
 }
+
+export const isJwt = (token: string | null): boolean => {
+  if (!token) {
+    return false
+  }
+
+  const parts = token.split('.')
+
+  if (parts.length !== 3) {
+    return false
+  }
+
+  try {
+    parts.forEach((part) => {
+      // convert base64 encoded string to a utf-8 string
+      Buffer.from(part, 'base64').toString('utf-8')
+    })
+    return true
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return false
+  }
+}
