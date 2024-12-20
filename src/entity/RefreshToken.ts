@@ -2,29 +2,23 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { User } from './User'
 
 @Entity()
-export class User {
+export class RefreshToken {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
-  firstName: string
+  @Column({ type: 'timestamp' })
+  expiresAt: Date
 
-  @Column()
-  lastName: string
-
-  @Column({ unique: true })
-  email: string
-
-  @Column()
-  password: string
-
-  @Column()
-  role: string
+  // Many refresh token can be created for one user as users can login to different devices
+  @ManyToOne(() => User)
+  user: User
 
   @UpdateDateColumn()
   updatedAt: number
