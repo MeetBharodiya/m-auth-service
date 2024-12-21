@@ -22,7 +22,7 @@ export class AuthController {
       res.status(400).json({ errors: result.array() })
     }
     const { firstName, lastName, email, password } = req.body
-    this.logger.debug('New request to regester a user', {
+    this.logger.debug('New request to register a user', {
       firstName,
       lastName,
       email,
