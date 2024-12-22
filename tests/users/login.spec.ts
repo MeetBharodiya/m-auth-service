@@ -26,10 +26,10 @@ describe('POST /auth/login', () => {
   })
 
   describe('Given all fields', () => {
-    // it('should return 201 status code', async () => {
+    // it('should return 200 status code', async () => {
     //   // Arrange
     //   const userData = {
-    //     email: '9B9yZ@example.com',
+    //     email: 'temp@gmail.com',
     //     password: 'password123',
     //   }
 
@@ -37,9 +37,10 @@ describe('POST /auth/login', () => {
     //   const response = await request(app as unknown as App)
     //     .post('/auth/login')
     //     .send(userData)
+    //   console.log(response.body)
 
     //   // Assert
-    //   expect(response.statusCode).toBe(201)
+    //   expect(response.statusCode).toBe(200)
     // })
 
     it('should return valid json response', async () => {
