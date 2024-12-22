@@ -3,7 +3,7 @@ import { Config } from './config'
 import { AppDataSource } from './config/data-source'
 import logger from './config/logger'
 
-const startSerevr = async () => {
+const startServer = async () => {
   const PORT = Config.PORT
 
   try {
@@ -18,4 +18,4 @@ const startSerevr = async () => {
   }
 }
 
-void startSerevr()
+void startServer()

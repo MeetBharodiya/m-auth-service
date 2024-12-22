@@ -7,13 +7,21 @@ import logger from '../config/logger'
 import registerValidator from '../validators/register-validator'
 import { TokenService } from '../services/TokenService'
 import { RefreshToken } from '../entity/RefreshToken'
+import loginValidator from '../validators/login-validator'
+import { CredentialService } from '../services/CredentialService'
 
 const router = express.Router()
 const userRepository = AppDataSource.getRepository(User)
 const tokenRepository = AppDataSource.getRepository(RefreshToken)
 const userService = new UserService(userRepository, logger)
 const tokenService = new TokenService(tokenRepository, logger)
-const authController = new AuthController(userService, logger, tokenService)
+const credentialService = new CredentialService()
+const authController = new AuthController(
+  userService,
+  logger,
+  tokenService,
+  credentialService,
+)
 
 // added (req,res) => function calling to solve bind issue in class methods
 router.post(
@@ -23,4 +31,10 @@ router.post(
     authController.register(req, res, next),
 )
 
+router.post(
+  '/login',
+  loginValidator,
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.login(req, res, next),
+)
 export default router
