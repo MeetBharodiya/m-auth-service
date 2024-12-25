@@ -44,7 +44,7 @@ export class AuthController {
         role: user.role,
       }
 
-      const accesssToken = this.tokenService.generateAccessToken(payload)
+      const accessToken = this.tokenService.generateAccessToken(payload)
 
       const newRefreshToken = await this.tokenService.persistRefreshToken(user)
 
@@ -53,7 +53,7 @@ export class AuthController {
         id: String(newRefreshToken.id),
       })
 
-      res.cookie('accessToken', accesssToken, {
+      res.cookie('accessToken', accessToken, {
         httpOnly: true, // restrict access to only server
         domain: 'localhost',
         maxAge: 1000 * 60 * 60, // 1 hour
@@ -147,5 +147,50 @@ export class AuthController {
   async self(req: AuthRequest, res: Response) {
     const user = await this.userService.findById(Number(req.auth.sub))
     res.json({ ...user, password: undefined })
+  }
+
+  async refresh(req: AuthRequest, res: Response, next: NextFunction) {
+    // refresh token is already validated in validateRefreshToken middleware so now do process to generate accesstoken for the same user
+    try {
+      const payload: JwtPayload = {
+        sub: req.auth.sub,
+        role: req.auth.role,
+      }
+
+      const user = await this.userService.findById(Number(payload.sub))
+
+      if (!user) {
+        const error = createHttpError(400, 'User with token could not find !!')
+        next(error)
+        return
+      }
+
+      const accessToken = this.tokenService.generateAccessToken(payload)
+      const newRefreshToken = await this.tokenService.persistRefreshToken(user)
+      // delete old refresh token
+      await this.tokenService.deleteRefreshToken(Number(req.auth.id))
+
+      const refreshToken = this.tokenService.generateRefreshToken({
+        ...payload,
+        id: String(newRefreshToken.id),
+      })
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true, // restrict access to only server
+        domain: 'localhost',
+        maxAge: 1000 * 60 * 60, // 1 hour
+        sameSite: 'strict',
+      })
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true, // restrict access to only server
+        domain: 'localhost',
+        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+        sameSite: 'strict',
+      })
+      res.status(201).json({ id: user.id })
+    } catch (error) {
+      next(error)
+      return
+    }
   }
 }

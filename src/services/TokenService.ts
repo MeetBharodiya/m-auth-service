@@ -55,4 +55,8 @@ export class TokenService {
     this.logger.debug('Refresh token saved in database')
     return newRefreshToken
   }
+
+  async deleteRefreshToken(tokenId: number) {
+    await this.refreshTokenRepository.delete({ id: tokenId })
+  }
 }
