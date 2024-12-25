@@ -72,6 +72,9 @@ certs/
 # Output of 'npm pack'
 *.tgz
 
+# ignore .well-known from public folder
+public/.well-known
+
 # Yarn Integrity file
 .yarn-integrity
 
