@@ -23,6 +23,7 @@ export class AuthController {
     if (!result.isEmpty()) {
       this.logger.error('Validation error', { errors: result.array() })
       res.status(400).json({ errors: result.array() })
+      return
     }
     const { firstName, lastName, email, password } = req.body
     this.logger.debug('New request to register a user', {

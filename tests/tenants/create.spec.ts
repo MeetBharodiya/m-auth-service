@@ -118,5 +118,37 @@ describe('POST /tenants', () => {
       expect(tenants).toHaveLength(0)
     })
   })
-  describe('Fields are missing', () => {})
+  describe('Fields are missing', () => {
+    it('should return 400 status code if address fild is missing', async () => {
+      // Arrange
+      const tenantData = {
+        name: 'Tenant1',
+      }
+
+      // Act
+      const response = await request(app as unknown as App)
+        .post('/tenants')
+        .set('Cookie', [`accessToken=${adminToken};`])
+        .send(tenantData)
+
+      // Assert
+      expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 400 status code if name fild is missing', async () => {
+      // Arrange
+      const tenantData = {
+        address: 'Address1',
+      }
+
+      // Act
+      const response = await request(app as unknown as App)
+        .post('/tenants')
+        .set('Cookie', [`accessToken=${adminToken};`])
+        .send(tenantData)
+
+      // Assert
+      expect(response.statusCode).toBe(400)
+    })
+  })
 })
