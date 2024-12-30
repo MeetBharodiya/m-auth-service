@@ -10,6 +10,7 @@ export class TenantController {
   ) {}
   async create(req: CreateTenantRequest, res: Response, next: NextFunction) {
     const { name, address } = req.body
+    this.logger.debug('New request to create a tenant', { name })
     try {
       const tenant = await this.tenantService.create({ name, address })
       this.logger.info('Tenant has been created', { id: tenant.id })
