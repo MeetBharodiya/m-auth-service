@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
 import { UserService } from '../services/UserService'
 import { CreateUserRequest } from '../types'
@@ -27,6 +27,19 @@ export class UserController {
         role: Roles.MANAGER,
       })
       res.status(201).json({ id: user.id })
+    } catch (error) {
+      next(error)
+      return
+    }
+  }
+
+  async getAllUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      this.logger.debug('New request to get all users')
+      const users = await this.userService.getAll()
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const sanitizedUsers = users.map(({ password, ...user }) => user)
+      res.json(sanitizedUsers)
     } catch (error) {
       next(error)
       return

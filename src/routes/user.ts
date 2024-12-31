@@ -22,4 +22,12 @@ router.post(
   (req: Request, res: Response, next: NextFunction) =>
     userController.create(req, res, next),
 )
+
+router.get(
+  '/',
+  authenticate,
+  canAccess([Roles.ADMIN]),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.getAllUsers(req, res, next),
+)
 export default router
