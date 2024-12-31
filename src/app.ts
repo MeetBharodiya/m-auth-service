@@ -4,6 +4,7 @@ import { HttpError } from 'http-errors'
 import logger from './config/logger'
 import authRouter from './routes/auth'
 import tenantRouter from './routes/tenant'
+import userRouter from './routes/user'
 import cookieParser from 'cookie-parser'
 
 const app = express()
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 app.use(cookieParser())
 app.use('/auth', authRouter)
 app.use('/tenants', tenantRouter)
+app.use('/users', userRouter)
 
 // Global Error Handler
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

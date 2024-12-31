@@ -7,6 +7,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { TokenService } from '../services/TokenService'
 import createHttpError from 'http-errors'
 import { CredentialService } from '../services/CredentialService'
+import { Roles } from '../constants'
 
 export class AuthController {
   // Created to use Dependency Injection as we can't craete instance of UserService in register function to reduce the depandency
@@ -37,6 +38,7 @@ export class AuthController {
         lastName,
         email,
         password,
+        role: Roles.CUSTOMER,
       })
       this.logger.info('User has been registered', { id: user.id })
 

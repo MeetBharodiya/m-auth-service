@@ -3,7 +3,6 @@ import { User } from '../entity/User'
 import { UserData } from '../types'
 import createHttpError from 'http-errors'
 import { Logger } from 'winston'
-import { Roles } from '../constants'
 import bcrypt from 'bcrypt'
 
 export class UserService {
@@ -11,11 +10,12 @@ export class UserService {
     private userRepository: Repository<User>,
     private logger: Logger,
   ) {}
-  async create({ firstName, lastName, email, password }: UserData) {
+  async create({ firstName, lastName, email, password, role }: UserData) {
     this.logger.debug('Creating user in database', {
       firstName,
       lastName,
       email,
+      role,
     })
     // check if email already exists
     const user = await this.userRepository.findOne({ where: { email: email } })
@@ -31,7 +31,7 @@ export class UserService {
         lastName,
         email,
         password: hashedPassword,
-        role: Roles.CUSTOMER,
+        role,
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
