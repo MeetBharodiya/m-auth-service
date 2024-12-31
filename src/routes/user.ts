@@ -30,4 +30,12 @@ router.get(
   (req: Request, res: Response, next: NextFunction) =>
     userController.getAllUsers(req, res, next),
 )
+
+router.get(
+  '/:id',
+  authenticate,
+  canAccess([Roles.ADMIN]),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.getOneUser(req, res, next),
+)
 export default router

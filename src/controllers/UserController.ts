@@ -37,9 +37,23 @@ export class UserController {
     try {
       this.logger.debug('New request to get all users')
       const users = await this.userService.getAll()
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const sanitizedUsers = users.map(({ password, ...user }) => user)
-      res.json(sanitizedUsers)
+      res.json(users)
+    } catch (error) {
+      next(error)
+      return
+    }
+  }
+
+  async getOneUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      this.logger.debug('New request to get one user')
+      const { id } = req.params
+      const user = await this.userService.findById(Number(id))
+      if (!user) {
+        res.status(404).json({ message: 'User not found' })
+        return
+      }
+      res.json(user)
     } catch (error) {
       next(error)
       return
