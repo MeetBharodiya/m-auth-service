@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon src/server.ts",
+    "build": "tsc",
     "format:fix": "prettier . --write",
     "format:check": "prettier . --check",
     "lint:fix": "eslint . --fix",
@@ -27,7 +28,7 @@
     "@types/http-errors": "^2.0.4",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^16.11.10",
+    "@types/node": "^17.0.25",
     "@types/supertest": "^6.0.2",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^8.15.0",

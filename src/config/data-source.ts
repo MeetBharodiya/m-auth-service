@@ -12,7 +12,8 @@ export const AppDataSource = new DataSource({
   // value must false in prod environment because data loss can occure
   synchronize: false,
   logging: false,
-  entities: ['src/entity/*.ts'],
-  migrations: ['src/migration/*.ts'],
+  // register entity with ts/js files
+  entities: ['src/entity/*.{ts,js}'],
+  migrations: ['src/migration/*.{ts.js}'],
   subscribers: [],
 })
