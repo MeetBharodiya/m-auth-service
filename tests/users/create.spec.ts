@@ -6,6 +6,8 @@ import { App } from 'supertest/types'
 import createJWKSMock from 'mock-jwks'
 import { Roles } from '../../src/constants'
 import { User } from '../../src/entity/User'
+import { createTenant } from '../utils'
+import { Tenant } from '../../src/entity/Tenant'
 
 describe('POST /users', () => {
   let connection: DataSource
@@ -41,34 +43,45 @@ describe('POST /users', () => {
   describe('Given all fields', () => {
     it('should return 201 status code', async () => {
       // Arrange
+
+      const tenant = await createTenant(connection.getRepository(Tenant))
+
       const userData = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'temp@example.com',
         password: 'password123',
-        tenantId: 11,
+        tenantId: tenant.id,
+        role: Roles.ADMIN,
       }
 
       adminToken = jwks.token({ sub: '1', role: Roles.ADMIN })
 
       // Act
+
       const response = await request(app as unknown as App)
         .post('/users')
         .set('Cookie', [`accessToken=${adminToken};`])
         .send(userData)
 
       // Assert
+      // console.log(response)
+
       expect(response.statusCode).toBe(201)
     })
 
     it('should persist the user in database', async () => {
       // Arrange
+
+      const tenant = await createTenant(connection.getRepository(Tenant))
+
       const userData = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'temp@example.com',
         password: 'password123',
-        tenantId: 11,
+        tenantId: tenant.id,
+        role: Roles.MANAGER,
       }
 
       adminToken = jwks.token({ sub: '1', role: Roles.ADMIN })
@@ -87,12 +100,14 @@ describe('POST /users', () => {
 
     it('should create a manager user', async () => {
       // Arrange
+      const tenant = await createTenant(connection.getRepository(Tenant))
       const userData = {
         firstName: 'John',
         lastName: 'Doe',
         email: 'temp@example.com',
         password: 'password123',
-        tenantId: 11,
+        tenantId: tenant.id,
+        role: Roles.MANAGER,
       }
 
       adminToken = jwks.token({ sub: '1', role: Roles.ADMIN })

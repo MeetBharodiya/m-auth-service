@@ -38,4 +38,20 @@ router.get(
   (req: Request, res: Response, next: NextFunction) =>
     userController.getOneUser(req, res, next),
 )
+
+router.patch(
+  '/:id',
+  authenticate,
+  canAccess([Roles.ADMIN]),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.updateUser(req, res, next),
+)
+
+router.delete(
+  '/:id',
+  authenticate,
+  canAccess([Roles.ADMIN]),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.destroy(req, res, next),
+)
 export default router

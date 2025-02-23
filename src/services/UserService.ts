@@ -10,12 +10,20 @@ export class UserService {
     private userRepository: Repository<User>,
     private logger: Logger,
   ) {}
-  async create({ firstName, lastName, email, password, role }: UserData) {
+  async create({
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    tenantId,
+  }: UserData) {
     this.logger.debug('Creating user in database', {
       firstName,
       lastName,
       email,
       role,
+      tenantId,
     })
     // check if email already exists
     const user = await this.userRepository.findOne({ where: { email: email } })
@@ -32,9 +40,12 @@ export class UserService {
         email,
         password: hashedPassword,
         role,
+        tenant: tenantId ? { id: tenantId } : undefined,
       })
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
     } catch (err) {
+      console.log('err', err)
+
       const error = createHttpError(500, 'Failed to store data in database')
       throw error
     }
@@ -50,5 +61,18 @@ export class UserService {
 
   async findById(id: number) {
     return await this.userRepository.findOne({ where: { id: id } })
+  }
+
+  async update(id: number, user: Partial<UserData>) {
+    if ('tenantId' in user) {
+      const tenant = user.tenantId ? { id: user.tenantId } : undefined
+      delete user.tenantId
+      user = { ...user, tenant } as Partial<UserData>
+    }
+    return await this.userRepository.update({ id: id }, user)
+  }
+
+  async delete(id: number) {
+    return await this.userRepository.delete({ id: id })
   }
 }
