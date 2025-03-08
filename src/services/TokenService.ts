@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import { JwtPayload, sign } from 'jsonwebtoken'
 import { Config } from '../config'
 import createHttpError from 'http-errors'
@@ -14,11 +12,13 @@ export class TokenService {
     private logger: Logger,
   ) {}
   generateAccessToken(payload: JwtPayload) {
-    let privatKey: Buffer
+    let privatKey: string
+    if (!Config.PRIVAT_KEY) {
+      const error = createHttpError(500, 'Private key not found')
+      throw error
+    }
     try {
-      privatKey = fs.readFileSync(
-        path.join(__dirname, '../../certs/privateKey.pem'),
-      )
+      privatKey = Config.PRIVAT_KEY
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       const error = createHttpError(500, 'Error while reading private key')
